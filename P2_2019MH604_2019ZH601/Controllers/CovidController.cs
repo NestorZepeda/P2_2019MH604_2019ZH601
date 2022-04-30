@@ -38,15 +38,51 @@ namespace P2_2019MH604_2019ZH601.Controllers
             ViewBag.ComboDepartamentos = ComboDepartamentos;
 
 
+
+
             IEnumerable<Generos> listaGeneros = from g in _context.generos
                                                 select g;
 
             List<SelectListItem> ComboGeneros = new List<SelectListItem>();
-            return View();
+
+            foreach (Generos genero in listaGeneros)
+            {
+                SelectListItem miOpciongenero = new SelectListItem
+                {
+                    Text = genero.Genero,
+                    Value = genero.IdGenero.ToString()
+                };
+                ComboGeneros.Add(miOpciongenero);
+            }
+            ViewBag.ComboGeneros = ComboGeneros;
+
+            IEnumerable<CasosReportados> casos = from c in _context.casosReportados select c;
+            return View(casos);
         }
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        
+        [HttpPost]
+        public ActionResult insertarDatos(CasosReportados casosReportados)
+        {
+            var nuevo = new CasosReportados()
+            {
+                IdDpartamento = casosReportados.IdDpartamento,
+                IdGenero= casosReportados.IdGenero,
+                confirmados = casosReportados.confirmados,
+                recuperados = casosReportados.recuperados,
+                fallecidos = casosReportados.fallecidos
+            };
+
+            _context.casosReportados.Add(nuevo);
+            _context.SaveChanges();
+
+            IEnumerable<CasosReportados> casos = from c in _context.casosReportados select c;
+
+            return RedirectToAction("Index", casos);
         }
     }
 }

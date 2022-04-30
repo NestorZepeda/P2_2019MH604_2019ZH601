@@ -2,20 +2,99 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-   
+
 }
+@model IEnumerable<CasosReportados>
 <div class="container body-content">
     <div class="text-center">
-        
-            <h2 class="display-4">@ViewData["Titulo"]</h2>
-            
-            <p>El siguiente formulario es para llevar el registro de casos reportados de </p>
-           
-            <p>Covid por departamento y genero.</p>
-       
+
+        <h2 class="display-4">@ViewData["Titulo"]</h2>
+
+        <p>El siguiente formulario es para llevar el registro de casos reportados de </p>
+
+        <p>Covid por departamento y genero.</p>
+
     </div>
+    <br />
+    <br />
     <div class="row">
-            <input
+        <h4>Reportar casos</h4>
     </div>
+    <br />
+    <br />
+    @using (Html.BeginForm("insertarDatos", "Covid", FormMethod.Post))
+    {
+        <div class="row">
+            <div class="col-md-6">
+                @Html.DropDownList("idDpartamento", (IEnumerable<SelectListItem>)ViewBag.ComboDepartamentos)
+            </div>
+            <div class="col-md-6">
+                @Html.DropDownList("IdGenero", (IEnumerable<SelectListItem>)ViewBag.ComboGeneros)
+            </div>
+
+        </div>
+        <br />
+        <br />
+
+        <div class="row">
+            <div class="col-md-4">
+                <label>Casos Confirmados</label>
+                @Html.TextBox("confirmados", "", new { @class = "form-control" })
+            </div>
+
+            <div class="col-md-4">
+                <label>Numero de Recuperados</label>
+                @Html.TextBox("recuperados", "", new { @class = "form-control" })
+            </div>
+
+            <div class="col-md-4">
+                <label>Numero de fallecidos</label>
+                @Html.TextBox("fallecidos", "", new { @class = "form-control" })
+            </div>
+
+        </div>
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <input type="submit" name="response" value="Registrar Casos" formmethod="post" class="btn btn-primary" />
+            </div>
+        </div>
+    }
+
+    <div class="container-fluid mt-5">
+        <h4 class="mb-3">Casos Reportados</h4>
+
+
+        <table class="table mr-3 ml-3">
+            <thead>
+                <tr>
+                    <th scope="col">Departamento</th>
+                    <th scope="col">Genero</th>
+                    <th scope="col">Confirmados</th>
+                    <th scope="col">Recuperados</th>
+                    <th scope="col">Fallecidos</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var c in Model)
+                {
+
+                    <tr>
+                        <td>@Html.DisplayFor(item => c.IdDpartamento)</td>
+                        <td>@Html.DisplayFor(item => c.IdGenero)</td>
+                        <td>@Html.DisplayFor(item => c.confirmados)</td>
+                        <td>@Html.DisplayFor(item => c.recuperados)</td>
+                        <td>@Html.DisplayFor(item => c.fallecidos)</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+    </div>
+
+
 
 </div>
