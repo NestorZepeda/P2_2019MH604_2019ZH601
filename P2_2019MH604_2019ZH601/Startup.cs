@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace P2_2019MH604_2019ZH601
 {
@@ -23,6 +24,7 @@ namespace P2_2019MH604_2019ZH601
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddDbContext<dbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("dbConexion")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
